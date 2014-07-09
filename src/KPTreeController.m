@@ -395,6 +395,9 @@ typedef enum {
 
     if (animated) {
         
+        // dispatch group to fire off callback after mapView has been updated with all new annotations
+        dispatch_group_t group = dispatch_group_create();
+        
         for(KPAnnotation *newCluster in newClusters){
             
             [self.mapView addAnnotation:newCluster];
@@ -424,11 +427,15 @@ typedef enum {
                     
                     if(MKMapRectContainsPoint(self.mapView.visibleMapRect, MKMapPointForCoordinate(newCluster.coordinate)) && shouldAnimate){
                         
+                        dispatch_group_enter(group);
+                        
                         [self _animateCluster:oldCluster
                                fromAnnotation:oldCluster
                                  toAnnotation:newCluster
                                    completion:^(BOOL finished) {
                                        [self.mapView removeAnnotation:oldCluster];
+                                       
+                                       dispatch_group_leave(group);
                                    }];
                     }
                     else {
@@ -438,11 +445,21 @@ typedef enum {
                 }
             }
         }
+        
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            if ([self.delegate respondsToSelector:@selector(treeController:didUpdateVisibileMapAnnotations:)]) {
+                [self.delegate treeController:self didUpdateVisibileMapAnnotations:visibleAnnotations];
+            }
+        });
 
     }
     else {
         [self.mapView removeAnnotations:oldClusters];
         [self.mapView addAnnotations:newClusters];
+        
+        if ([self.delegate respondsToSelector:@selector(treeController:didUpdateVisibileMapAnnotations:)]) {
+            [self.delegate treeController:self didUpdateVisibileMapAnnotations:visibleAnnotations];
+        }
     }
         
 }
