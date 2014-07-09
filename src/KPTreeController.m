@@ -368,19 +368,6 @@ typedef enum {
         /* Validation (Debug, remove later) */
         assert(counter == (gridSizeX * gridSizeY));
         
-        /* Validation (Debug, remove later) */
-        for(int i = 0; i < gridSizeX; i++){
-            for(int j = 0; j < gridSizeY; j++){
-                kp_cluster_t *cluster = clusterGrid[i][j];
-                
-                if (cluster) {
-                    assert(cluster->merged == NO);
-                    assert(cluster->annotationIndex >= 0);
-                    assert(cluster->annotationIndex < gridSizeX * gridSizeY);
-                }
-            }
-        }
-        
         newClusters = (NSMutableArray *)[self _mergeOverlappingClusters:newClusters inClusterGrid:clusterGrid gridSizeX:gridSizeX gridSizeY:gridSizeY];
     }
 
