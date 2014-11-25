@@ -46,11 +46,6 @@
     return (self.annotations.count > 1);
 }
 
-- (NSString *)title {
-    id<MKAnnotation> annotation = [self.annotations anyObject];
-    return (self.annotations.count == 1 && [annotation respondsToSelector:@selector(title)]) ? [annotation title] : _title;
-}
-
 #pragma mark - Private
 
 - (void)calculateValues {
