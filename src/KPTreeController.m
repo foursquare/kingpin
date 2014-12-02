@@ -215,6 +215,10 @@ typedef enum {
 
 - (void)_updateVisibleMapAnnotationsOnMapView:(BOOL)animated
 {
+    if (self.mapView.visibleMapRect.size.width == 0 || self.mapView.visibleMapRect.size.height == 0) {
+        return;
+    }
+    
     NSSet *visibleAnnotations = [self.mapView annotationsInMapRect:[self.mapView visibleMapRect]];
     
     // updates visible map rect plus a map view's worth of padding around it
