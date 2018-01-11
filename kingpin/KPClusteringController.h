@@ -80,7 +80,7 @@
                 toAnnotation:(KPAnnotation *)toAnnotation;
 
 - (void)clusteringController:(KPClusteringController *)clusteringController
-           performAnimations:(void(^)())animations
+           performAnimations:(void(^)(void))animations
        withCompletionHandler:(void(^)(BOOL finished))completion;
 
 @end

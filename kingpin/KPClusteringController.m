@@ -316,7 +316,7 @@ typedef NS_ENUM(NSInteger, KPClusteringControllerMapViewportChangeState) {
                          toAnnotation:toAnnotation];
     }
     
-    void (^completionDelegate)() = ^ {
+    void (^completionDelegate)(void) = ^ {
         if ([self.delegate respondsToSelector:@selector(clusteringController:
                                                         didAnimateAnnotation:
                                                         fromAnnotation:
